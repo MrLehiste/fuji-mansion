@@ -16,6 +16,9 @@ FourSquare Search
 
 [url4square_venueDetail](https://api.foursquare.com/v2/venues/5377e1cb498e4a4600ffd521?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2)
 
+Category image: https://developer.foursquare.com/docs/responses/category
+https://ss3.4sqi.net/img/categories_v2/food/taco_bg_64.png
+
 My Apps
 Nearby Food
 
