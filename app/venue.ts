@@ -3,4 +3,5 @@ export interface Venue {
   name: string;
   formattedAddress: string;
   icon: string;
+  bestPhoto: string;  
 }

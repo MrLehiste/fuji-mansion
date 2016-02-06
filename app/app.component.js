@@ -1,4 +1,4 @@
-System.register(['angular2/core', './venue.service'], function(exports_1) {
+System.register(['angular2/core', './venue.service', './venue-detail.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, venue_service_1;
+    var core_1, venue_service_1, venue_detail_component_1;
     var AppComponent;
     return {
         setters:[
@@ -17,6 +17,9 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
             },
             function (venue_service_1_1) {
                 venue_service_1 = venue_service_1_1;
+            },
+            function (venue_detail_component_1_1) {
+                venue_detail_component_1 = venue_detail_component_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -35,9 +38,10 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'fuji-mansion-app',
-                        template: "\n  <h1>{{title}}</h1>\n  <h2>My Venues</h2>\n    <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\">{{venue.id}}</span> {{venue.name}}\n    </li>\n    </ul>\n  ",
-                        directives: [],
-                        providers: [venue_service_1.VenueService]
+                        template: "\n  <h1>{{title}}</h1>\n  <h2>My Venues List</h2>\n    <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> {{venue.name}} in {{venue.formattedAddress}}\n    </li>\n    </ul>\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  ",
+                        directives: [venue_detail_component_1.VenueDetailComponent],
+                        providers: [venue_service_1.VenueService],
+                        styleUrls: ['app/venues.css']
                     }), 
                     __metadata('design:paramtypes', [venue_service_1.VenueService])
                 ], AppComponent);
