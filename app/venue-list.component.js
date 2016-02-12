@@ -22,8 +22,16 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
             VenueListComponent = (function () {
                 function VenueListComponent(_venueService) {
                     this._venueService = _venueService;
+                    //venueSelected: EventEmitter<Venue>;
+                    this.venueClick = new core_1.EventEmitter();
+                    //this.venueSelected = new EventEmitter();
                 }
-                VenueListComponent.prototype.onSelect = function (venue) { this.selectedVenue = venue; };
+                VenueListComponent.prototype.onSelect = function (venue) {
+                    this.selectedVenue = venue;
+                    console.log('Venue Selected: ' + venue.name);
+                    //this.venueSelected.emit(venue);
+                    this.venueClick.emit(venue);
+                };
                 VenueListComponent.prototype.ngOnInit = function () { this.getVenues(); };
                 VenueListComponent.prototype.getVenues = function () {
                     var _this = this;
@@ -31,6 +39,10 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
                     this._venueService.getVenues()
                         .subscribe(function (venues) { return _this.venues = venues; }, function (error) { return _this.errorMessage = error; });
                 };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], VenueListComponent.prototype, "venueClick", void 0);
                 VenueListComponent = __decorate([
                     core_1.Component({
                         selector: 'venue-list',

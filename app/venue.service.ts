@@ -22,7 +22,13 @@ export class VenueService {
             if (resVenues) {
                 resVenues.forEach((ven) => {
                     console.log(ven.name);
-                    result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png', ven.bestPhoto));
+                    result.push(new Venue(
+                        ven.id
+                        , ven.name
+                        , ven.location.formattedAddress
+                        , undefined // () => ''// ven.categories[0].icon.prefix + 'bg_32.png' || ''
+                        , ven.bestPhoto
+                    ));
                 });
             }
             return result;

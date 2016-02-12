@@ -22,7 +22,7 @@ import {HTTP_PROVIDERS}    from 'angular2/http';
       <span class="badge"><img src={{venue.icon}}></span> {{venue.name}} in {{venue.formattedAddress}}
     </li>
     </ul>
-    <venue-list></venue-list>
+    <venue-list (venueClick)="onSelect($event)"></venue-list>
     <my-venue-detail [venue]="selectedVenue"></my-venue-detail>
   `
     ,directives: [VenueListComponent, VenueDetailComponent]
@@ -39,8 +39,12 @@ export class AppComponent implements OnInit {
   public title = 'Tour of Venues';
   public selectedVenue: Venue;  
   public venues: Venue[];
-  onSelect(venue: Venue) { this.selectedVenue = venue; }
   constructor(private _venueService: VenueService) { }
+  onSelect(venue: Venue) { 
+    console.log('APP.onSelect');
+    console.log(venue);
+    this.selectedVenue = venue; 
+  }
   getVenues() {
     this._venueService.getVenuesMock().then(venues => this.venues = venues);
   }

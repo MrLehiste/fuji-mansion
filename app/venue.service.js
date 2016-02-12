@@ -45,7 +45,8 @@ System.register(['./venue', './mock-venues', 'angular2/core', 'angular2/http', '
                         if (resVenues) {
                             resVenues.forEach(function (ven) {
                                 console.log(ven.name);
-                                result.push(new venue_1.Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png', ven.bestPhoto));
+                                result.push(new venue_1.Venue(ven.id, ven.name, ven.location.formattedAddress, undefined // () => ''// ven.categories[0].icon.prefix + 'bg_32.png' || ''
+                                , ven.bestPhoto));
                             });
                         }
                         return result;
