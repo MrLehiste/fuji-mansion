@@ -13,6 +13,7 @@ import {HTTP_PROVIDERS}    from 'angular2/http';
 @Component({
     selector: 'fuji-mansion-app',
     template: `
+ <div class="leftColumn">  
   <h1>{{title}}</h1>
   <h2>My Venues List</h2>
     <ul class="venues">
@@ -23,7 +24,10 @@ import {HTTP_PROVIDERS}    from 'angular2/http';
     </li>
     </ul>
     <venue-list (venueClick)="onSelect($event)"></venue-list>
+  </div>
+  <div class="rightColumn">
     <my-venue-detail [venue]="selectedVenue"></my-venue-detail>
+  </div>
   `
     ,directives: [VenueListComponent, VenueDetailComponent]
     ,providers: [HTTP_PROVIDERS,VenueService]
@@ -43,7 +47,8 @@ export class AppComponent implements OnInit {
   onSelect(venue: Venue) { 
     console.log('APP.onSelect');
     console.log(venue);
-    this.selectedVenue = venue; 
+    this._venueService.getVenueById(venue.id).subscribe(venue => this.selectedVenue = venue);
+    //this.selectedVenue = venue; 
   }
   getVenues() {
     this._venueService.getVenuesMock().then(venues => this.venues = venues);

@@ -46,7 +46,7 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
                 VenueListComponent = __decorate([
                     core_1.Component({
                         selector: 'venue-list',
-                        template: "New Venue List\n  <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> {{venue.name}} in {{venue.formattedAddress}}\n    </li>\n  </ul>\n  ",
+                        template: "New Venue List\n  <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> {{venue.name}} \n    </li>\n  </ul>\n  ",
                         styleUrls: ['app/venues.css']
                     }), 
                     __metadata('design:paramtypes', [venue_service_1.VenueService])

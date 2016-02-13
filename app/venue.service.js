@@ -1,4 +1,4 @@
-System.register(['./venue', './mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1) {
+System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,13 +8,10 @@ System.register(['./venue', './mock-venues', 'angular2/core', 'angular2/http', '
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var venue_1, mock_venues_1, core_1, http_1, Observable_1;
+    var mock_venues_1, core_1, http_1, Observable_1;
     var VenueService;
     return {
         setters:[
-            function (venue_1_1) {
-                venue_1 = venue_1_1;
-            },
             function (mock_venues_1_1) {
                 mock_venues_1 = mock_venues_1_1;
             },
@@ -35,6 +32,25 @@ System.register(['./venue', './mock-venues', 'angular2/core', 'angular2/http', '
                     this._venues4square1 = 'https://api.foursquare.com/v2/venues/517f1985e4b09ee45be0717e?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
                     this._venues4square = 'https://api.foursquare.com/v2/venues/search?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
                 }
+                VenueService.prototype.getVenueById = function (venueId) {
+                    console.log('getVenueById ' + venueId);
+                    var venue4square1 = "https://api.foursquare.com/v2/venues/" + venueId + "?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2";
+                    //this._venues4square1 = 'https://api.foursquare.com/v2/venues/' + venueId + '?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
+                    return this.http.get(venue4square1)
+                        .map(function (res) { return res.json().response.venue; })
+                        .do(function (data) { return console.log(data); }) // eyeball results in the console
+                        .map(function (ven) {
+                        var iVenue = { id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress };
+                        if (ven.categories[0]) {
+                            iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png';
+                        }
+                        if (ven.bestPhoto) {
+                            iVenue.bestPhoto = ven.bestPhoto.prefix + 'width400' + ven.bestPhoto.suffix;
+                        }
+                        return iVenue;
+                    })
+                        .catch(this.handleError);
+                };
                 VenueService.prototype.getVenues = function () {
                     console.log('getVenues');
                     return this.http.get(this._venues4square)
@@ -45,8 +61,12 @@ System.register(['./venue', './mock-venues', 'angular2/core', 'angular2/http', '
                         if (resVenues) {
                             resVenues.forEach(function (ven) {
                                 console.log(ven.name);
-                                result.push(new venue_1.Venue(ven.id, ven.name, ven.location.formattedAddress, undefined // () => ''// ven.categories[0].icon.prefix + 'bg_32.png' || ''
-                                , ven.bestPhoto));
+                                var iVenue = { id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress };
+                                if (ven.categories[0]) {
+                                    iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png';
+                                }
+                                result.push(iVenue);
+                                //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));
                             });
                         }
                         return result;
@@ -54,16 +74,18 @@ System.register(['./venue', './mock-venues', 'angular2/core', 'angular2/http', '
                         .catch(this.handleError);
                 };
                 VenueService.prototype.getVenuesJson = function () {
-                    console.log('getVenues');
+                    console.log('getVenuesJson()');
                     return this.http.get(this._venuesUrl)
                         .map(function (res) { return res.json(); })
                         .do(function (data) { return console.log(data); }) // eyeball results in the console
-                        .map(function (tasks) {
+                        .map(function (resVenues) {
                         var result = [];
-                        if (tasks) {
-                            tasks.forEach(function (task) {
-                                console.log(task.name);
-                                result.push(new venue_1.Venue(task.id, task.name, task.formattedAddress, task.icon, task.bestPhoto));
+                        if (resVenues) {
+                            resVenues.forEach(function (ven) {
+                                console.log(ven.name);
+                                var iVenue = { id: ven.id, name: ven.name, formattedAddress: ven.formattedAddress, icon: ven.icon, bestPhoto: ven.bestPhoto };
+                                result.push(iVenue);
+                                //result.push(new Venue(ven.id, ven.name, ven.formattedAddress, ven.icon, ven.bestPhoto));
                             });
                         }
                         return result;

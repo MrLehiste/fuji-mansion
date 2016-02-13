@@ -1,4 +1,12 @@
-.selected {
+  .leftColumn {
+    float: left;
+    width: 50%;
+  }
+  .rightColumn {
+    float: right;
+    width: 50%;
+  }
+  .selected {
     background-color: #CFD8DC !important;
     color: white;
   }

@@ -11,6 +11,24 @@ export class VenueService {
   private _venues4square1 = 'https://api.foursquare.com/v2/venues/517f1985e4b09ee45be0717e?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   private _venues4square = 'https://api.foursquare.com/v2/venues/search?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
 
+  getVenueById (venueId: string) {
+    console.log('getVenueById ' + venueId);
+    let venue4square1 = `https://api.foursquare.com/v2/venues/${venueId}?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2`;
+    //this._venues4square1 = 'https://api.foursquare.com/v2/venues/' + venueId + '?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
+    
+    return this.http.get(venue4square1)
+        //.map(res => <Venue[]> res.json().data)
+        .map(res => res.json().response.venue)
+        .do(data => console.log(data)) // eyeball results in the console
+        .map((ven) => {
+            let iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress};
+            if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
+            if(ven.bestPhoto){ iVenue.bestPhoto = ven.bestPhoto.prefix + 'width400' + ven.bestPhoto.suffix }
+            return iVenue;
+        })
+        .catch(this.handleError);
+  }
+
   getVenues () {
     console.log('getVenues');
     return this.http.get(this._venues4square)
@@ -22,13 +40,10 @@ export class VenueService {
             if (resVenues) {
                 resVenues.forEach((ven) => {
                     console.log(ven.name);
-                    result.push(new Venue(
-                        ven.id
-                        , ven.name
-                        , ven.location.formattedAddress
-                        , undefined // () => ''// ven.categories[0].icon.prefix + 'bg_32.png' || ''
-                        , ven.bestPhoto
-                    ));
+                    var iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress};
+                    if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
+                    result.push(iVenue);
+                    //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));
                 });
             }
             return result;
@@ -37,17 +52,19 @@ export class VenueService {
   }
   
   getVenuesJson () {
-    console.log('getVenues');
+    console.log('getVenuesJson()');
     return this.http.get(this._venuesUrl)
         //.map(res => <Venue[]> res.json().data)
         .map(res => res.json())
         .do(data => console.log(data)) // eyeball results in the console
-        .map((tasks: Array<any>) => {
+        .map((resVenues: Array<any>) => {
             let result:Array<Venue> = [];
-            if (tasks) {
-                tasks.forEach((task) => {
-                    console.log(task.name);
-                    result.push(new Venue(task.id, task.name, task.formattedAddress, task.icon, task.bestPhoto));
+            if (resVenues) {
+                resVenues.forEach((ven) => {
+                    console.log(ven.name);
+                    var iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.formattedAddress, icon: ven.icon, bestPhoto: ven.bestPhoto};
+                    result.push(iVenue);
+                    //result.push(new Venue(ven.id, ven.name, ven.formattedAddress, ven.icon, ven.bestPhoto));
                 });
             }
             return result;

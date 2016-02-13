@@ -1,11 +1,12 @@
-/*export interface Venue {
+export interface Venue {
   id: string;
   name: string;
-  formattedAddress: string;
-  icon: string;
-  bestPhoto: string;  
-}*/
+  formattedAddress?: string;
+  icon?: string;
+  bestPhoto?: string;  
+}
 
+/*
 export class Venue {
   constructor(
     public id: string,
@@ -15,3 +16,4 @@ export class Venue {
     public bestPhoto: string
   ){}
 }
+*/

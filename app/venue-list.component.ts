@@ -8,7 +8,7 @@ import {VenueService} from './venue.service';
     <li *ngFor="#venue of venues"
       [class.selected]="venue === selectedVenue"
       (click)="onSelect(venue)">
-      <span class="badge"><img src={{venue.icon}}></span> {{venue.name}} in {{venue.formattedAddress}}
+      <span class="badge"><img src={{venue.icon}}></span> {{venue.name}} 
     </li>
   </ul>
   `
