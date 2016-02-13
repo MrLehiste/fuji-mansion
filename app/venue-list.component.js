@@ -36,7 +36,7 @@ System.register(['angular2/core', './venue.service'], function(exports_1) {
                 VenueListComponent.prototype.getVenues = function () {
                     var _this = this;
                     //this._venueService.getVenuesMock().then(venues => this.venues = venues);
-                    this._venueService.getVenues()
+                    this._venueService.exploreVenues()
                         .subscribe(function (venues) { return _this.venues = venues; }, function (error) { return _this.errorMessage = error; });
                 };
                 __decorate([

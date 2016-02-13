@@ -53,7 +53,7 @@ System.register(['angular2/core', 'angular2/router', './venue.service', './venue
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'fuji-mansion-app',
-                        template: "\n <div class=\"leftColumn\">  \n  <h1>{{title}}</h1>\n  <h2>My Venues List</h2>\n    <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> {{venue.name}} in {{venue.formattedAddress}}\n    </li>\n    </ul>\n    <venue-list (venueClick)=\"onSelect($event)\"></venue-list>\n  </div>\n  <div class=\"rightColumn\">\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  </div>\n  ",
+                        template: "\n <div class=\"leftColumn\">  \n  <h1>{{title}}</h1>\n  <h2>My Venues List</h2>\n    <ul class=\"venues\" style=\"display: none;\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> {{venue.name}} in {{venue.formattedAddress}}\n    </li>\n    </ul>\n    <venue-list (venueClick)=\"onSelect($event)\"></venue-list>\n  </div>\n  <div class=\"rightColumn\">\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  </div>\n  ",
                         directives: [venue_list_component_1.VenueListComponent, venue_detail_component_1.VenueDetailComponent],
                         providers: [http_1.HTTP_PROVIDERS, venue_service_1.VenueService],
                         styleUrls: ['app/venues.css']

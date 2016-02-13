@@ -16,7 +16,7 @@ import {HTTP_PROVIDERS}    from 'angular2/http';
  <div class="leftColumn">  
   <h1>{{title}}</h1>
   <h2>My Venues List</h2>
-    <ul class="venues">
+    <ul class="venues" style="display: none;">
     <li *ngFor="#venue of venues"
       [class.selected]="venue === selectedVenue"
       (click)="onSelect(venue)">

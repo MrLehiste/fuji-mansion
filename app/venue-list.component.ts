@@ -36,7 +36,7 @@ export class VenueListComponent implements OnInit {
   ngOnInit() { this.getVenues(); }
   getVenues() {
     //this._venueService.getVenuesMock().then(venues => this.venues = venues);
-    this._venueService.getVenues()
+    this._venueService.exploreVenues()
                      .subscribe(
                        venues => this.venues = venues,
                        error =>  this.errorMessage = <any>error);
