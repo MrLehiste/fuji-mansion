@@ -19,6 +19,11 @@ FourSquare Search
 Category image: https://developer.foursquare.com/docs/responses/category
 https://ss3.4sqi.net/img/categories_v2/food/taco_bg_64.png
 
+https://developer.foursquare.com/docs/venues/categories
+https://developer.foursquare.com/docs/responses/category
+https://developer.foursquare.com/categorytree
+https://api.foursquare.com/v2/venues/categories?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2
+
 Venue Photo: https://developer.foursquare.com/docs/responses/photo
 https://irs3.4sqi.net/img/general/original/54855851_NeOLondearUbiGXNck6V9TYU9gHplqpAoOQiYowzxOA.jpg
 

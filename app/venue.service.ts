@@ -3,6 +3,7 @@ import {VENUES} from './mock-venues';
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
+import {ExploreFilter} from './forms/explore-filter';
 
 @Injectable()
 export class VenueService {
@@ -11,6 +12,10 @@ export class VenueService {
   private _venues4square1 = 'https://api.foursquare.com/v2/venues/517f1985e4b09ee45be0717e?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   private _venues4square = 'https://api.foursquare.com/v2/venues/search?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   private _explore4square = 'https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
+  
+  private _version = '20151127';
+  private _client_id = '5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO';
+  private _client_secret = 'XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
 
   getVenueById (venueId: string) {
     console.log('getVenueById ' + venueId);
@@ -52,9 +57,11 @@ export class VenueService {
         .catch(this.handleError);
   }
   
-  exploreVenues() {
-    console.log('exploreVenues');
-    return this.http.get(this._explore4square)
+  exploreVenues(exploreFilter: ExploreFilter) {
+    let url_explore = `https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=${exploreFilter.section}&v=${this._version}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    if(exploreFilter.query){ url_explore = `https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&query=${exploreFilter.query}&v=${this._version}&client_id=${this._client_id}&client_secret=${this._client_secret}`; }
+    console.log('exploreVenues ' + url_explore);
+    return this.http.get(url_explore)
         .map(res => res.json().response.groups[0].items)
         .do(data => console.log(data)) // eyeball results in the console
         .map((resVenues: Array<any>) => {
@@ -63,7 +70,7 @@ export class VenueService {
                 resVenues.forEach((ven) => {
                     console.log(ven.venue.name);
                     var iVenue: Venue = {id: ven.venue.id, name: ven.venue.name, formattedAddress: ven.venue.location.formattedAddress};
-                    if(ven.venue.categories[0]){ iVenue.icon = ven.venue.categories[0].icon.prefix + 'bg_32.png' }
+                    if(ven.venue.categories[0]){ iVenue.icon = ven.venue.categories[0].icon.prefix + '32.png' }
                     result.push(iVenue);
                     //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));
                 });
