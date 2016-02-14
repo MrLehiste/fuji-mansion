@@ -34,9 +34,10 @@ export class VenueService {
         .catch(this.handleError);
   }
 
-  getVenues () {
-    console.log('getVenues');
-    return this.http.get(this._venues4square)
+  searchVenues (categoryId: string) {
+    console.log('searchVenues');
+    let url_search = `${this._api}/venues/search?ll=32.536187,-117.008005&categoryId=${categoryId}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    return this.http.get(url_search)
         .map(res => res.json().response.venues)
         .do(data => console.log(data)) // eyeball results in the console
         .map((resVenues: Array<any>) => {
@@ -56,7 +57,7 @@ export class VenueService {
   }
   
   getCategories () {
-    console.log('getVenues');
+    console.log('getCategories');
     let cat_url = `${this._api}/venues/categories?v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
     return this.http.get(cat_url)
         .map(res => res.json().response.categories)

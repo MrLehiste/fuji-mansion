@@ -26,8 +26,24 @@ System.register([], function(exports_1) {
                 };
                 CatItem.prototype.check = function () {
                     this.checked = !this.checked;
-                    this.checkRecursive(this.checked);
+                    //this.checkRecursive(this.checked);
                 };
+                CatItem.prototype.getCheckedIds = function () {
+                    var result = [];
+                    if (this.checked) {
+                        result.push(this.id);
+                    }
+                    else {
+                        if (this.categories.length > 0) {
+                            this.categories.forEach(function (cat) {
+                                //result.concat(cat.getCheckedIds());
+                                result.push.apply(result, cat.getCheckedIds());
+                            });
+                        }
+                    }
+                    return result;
+                };
+                //recursiveCatIds(){}
                 CatItem.prototype.checkRecursive = function (state) {
                     this.categories.forEach(function (d) {
                         d.checked = state;

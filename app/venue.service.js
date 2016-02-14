@@ -58,9 +58,10 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                     })
                         .catch(this.handleError);
                 };
-                VenueService.prototype.getVenues = function () {
-                    console.log('getVenues');
-                    return this.http.get(this._venues4square)
+                VenueService.prototype.searchVenues = function (categoryId) {
+                    console.log('searchVenues');
+                    var url_search = this._api + "/venues/search?ll=32.536187,-117.008005&categoryId=" + categoryId + "&v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
+                    return this.http.get(url_search)
                         .map(function (res) { return res.json().response.venues; })
                         .do(function (data) { return console.log(data); }) // eyeball results in the console
                         .map(function (resVenues) {
@@ -82,7 +83,7 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                 };
                 VenueService.prototype.getCategories = function () {
                     var _this = this;
-                    console.log('getVenues');
+                    console.log('getCategories');
                     var cat_url = this._api + "/venues/categories?v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
                     return this.http.get(cat_url)
                         .map(function (res) { return res.json().response.categories; })

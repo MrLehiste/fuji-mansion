@@ -23,6 +23,9 @@ import {CatItem} from './cat-view/cat-item';
       </template>
       <template ui-pane title='Search'>
         <cat-view [categories]="categories"></cat-view>
+        <button type="button" class="btn btn-primary" (click)="getSelectedCategories()">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search Venues
+        </button>
       </template>
     </ui-tabs>
     <venue-list [venues]="venueList" (venueClick)="onSelect($event)"></venue-list>
@@ -56,6 +59,19 @@ export class AppComponent implements OnInit {
         venues => this.venueList = venues
         //,error =>  this.errorMessage = <any>error
       );
+  }
+  
+  getSelectedCategories(){
+    let result: Array<string> = [];
+    
+    if(this.categories.length > 0){
+      this.categories.forEach(
+        cat => {
+          result.push.apply( result, cat.getCheckedIds() );
+      });
+    }
+    console.log('RESULT:' + result.toString());
+    this._venueService.searchVenues(result.toString()).subscribe(vens => this.venueList = vens);
   }
   
   ngOnInit() {
