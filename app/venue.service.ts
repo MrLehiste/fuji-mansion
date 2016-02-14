@@ -4,6 +4,7 @@ import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 import {ExploreFilter} from './forms/explore-filter';
+import {CatItem} from './cat-view/cat-item';
 
 @Injectable()
 export class VenueService {
@@ -13,17 +14,15 @@ export class VenueService {
   private _venues4square = 'https://api.foursquare.com/v2/venues/search?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   private _explore4square = 'https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   
-  private _version = '20151127';
+  private _api = 'https://api.foursquare.com/v2';
+  private _v = '20151127';
   private _client_id = '5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO';
   private _client_secret = 'XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
 
   getVenueById (venueId: string) {
     console.log('getVenueById ' + venueId);
-    let venue4square1 = `https://api.foursquare.com/v2/venues/${venueId}?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2`;
-    //this._venues4square1 = 'https://api.foursquare.com/v2/venues/' + venueId + '?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
-    
+    let venue4square1 = `${this._api}/venues/${venueId}?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2`;
     return this.http.get(venue4square1)
-        //.map(res => <Venue[]> res.json().data)
         .map(res => res.json().response.venue)
         .do(data => console.log(data)) // eyeball results in the console
         .map((ven) => {
@@ -38,7 +37,6 @@ export class VenueService {
   getVenues () {
     console.log('getVenues');
     return this.http.get(this._venues4square)
-        //.map(res => <Venue[]> res.json().data)
         .map(res => res.json().response.venues)
         .do(data => console.log(data)) // eyeball results in the console
         .map((resVenues: Array<any>) => {
@@ -57,9 +55,48 @@ export class VenueService {
         .catch(this.handleError);
   }
   
+  getCategories () {
+    console.log('getVenues');
+    let cat_url = `${this._api}/venues/categories?v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    return this.http.get(cat_url)
+        .map(res => res.json().response.categories)
+        .do(data => console.log(data)) // eyeball results in the console
+        .map((cats: Array<any>) => {
+            let result:Array<CatItem> = [];
+            if (cats) {
+                cats.forEach((cat) => {
+                    console.log(cat.name);
+                    //if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
+                    result.push(new CatItem(cat.id, cat.name, cat.icon.prefix + 'bg_32.png'
+                    , this.getCatArray(cat.categories)
+                    ));
+                });
+            }
+            console.log('RESULT');
+            console.log(result);
+            return result;
+        })
+        .catch(this.handleError);
+  }
+  
+  getCatArray(categories){
+      let result:Array<CatItem> = [];
+      if(categories){
+        categories.forEach(
+          (cat) => {
+            //console.log('recursive ' + cat.name);
+            result.push(new CatItem(cat.id, cat.name, cat.icon.prefix + 'bg_32.png'
+                    ,this.getCatArray(cat.categories)
+                    ));
+          }
+        );
+      }
+      return result;
+  }
+  
   exploreVenues(exploreFilter: ExploreFilter) {
-    let url_explore = `https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=${exploreFilter.section}&v=${this._version}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
-    if(exploreFilter.query){ url_explore = `https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&query=${exploreFilter.query}&v=${this._version}&client_id=${this._client_id}&client_secret=${this._client_secret}`; }
+    let url_explore = `${this._api}/venues/explore?ll=32.536187,-117.008005&section=${exploreFilter.section}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    if(exploreFilter.query){ url_explore = `${this._api}/venues/explore?ll=32.536187,-117.008005&query=${exploreFilter.query}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`; }
     console.log('exploreVenues ' + url_explore);
     return this.http.get(url_explore)
         .map(res => res.json().response.groups[0].items)

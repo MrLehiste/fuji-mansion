@@ -1,4 +1,6 @@
 import {Component} from 'angular2/core';
+import {OnInit} from 'angular2/core';
+import {HTTP_PROVIDERS}    from 'angular2/http';
 
 import {Venue} from './venue';
 import {VenueService} from './venue.service';
@@ -8,10 +10,8 @@ import {UiTabs, UiPane} from './ui-tabs';
 import {ExploreFormComponent} from './forms/explore-form.component'
 import {NgForm}    from 'angular2/common';
 import {ExploreFilter} from './forms/explore-filter';
-
-
-import {OnInit} from 'angular2/core';
-import {HTTP_PROVIDERS}    from 'angular2/http';
+import {CatView} from './cat-view/cat-view';
+import {CatItem} from './cat-view/cat-item';
 
 @Component({
     selector: 'fuji-mansion-app',
@@ -22,7 +22,7 @@ import {HTTP_PROVIDERS}    from 'angular2/http';
         <explore-form (formSubmit)="exploreVenues($event)"></explore-form>
       </template>
       <template ui-pane title='Search'>
-        Search items #Todo.
+        <cat-view [categories]="categories"></cat-view>
       </template>
     </ui-tabs>
     <venue-list [venues]="venueList" (venueClick)="onSelect($event)"></venue-list>
@@ -31,7 +31,7 @@ import {HTTP_PROVIDERS}    from 'angular2/http';
     <my-venue-detail [venue]="selectedVenue"></my-venue-detail>
   </div>
   `
-    ,directives: [VenueListComponent, VenueDetailComponent, UiTabs, UiPane, ExploreFormComponent]
+    ,directives: [VenueListComponent, VenueDetailComponent, UiTabs, UiPane, ExploreFormComponent, CatView]
     ,providers: [HTTP_PROVIDERS, VenueService]
     ,styleUrls: ['app/venues.css']
 })
@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   public title = 'Fuji Mansion';
   public selectedVenue: Venue;  
   public venueList: Venue[];
+  categories: Array<CatItem>;
   
   constructor(private _venueService: VenueService) { }
   
@@ -57,10 +58,15 @@ export class AppComponent implements OnInit {
       );
   }
   
+  ngOnInit() {
+    this.getVenues();
+    this.getCategories();
+  }
   getVenues() {
     this._venueService.getVenuesMock().then(venues => this.venueList = venues);
   }
-  ngOnInit() {
-    this.getVenues();
+  getCategories() {
+    this._venueService.getCategories().subscribe(cats => this.categories = cats);
   }
+  
 }

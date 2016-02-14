@@ -1,4 +1,4 @@
-System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1) {
+System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observable', './cat-view/cat-item'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var mock_venues_1, core_1, http_1, Observable_1;
+    var mock_venues_1, core_1, http_1, Observable_1, cat_item_1;
     var VenueService;
     return {
         setters:[
@@ -23,6 +23,9 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
+            },
+            function (cat_item_1_1) {
+                cat_item_1 = cat_item_1_1;
             }],
         execute: function() {
             VenueService = (function () {
@@ -32,14 +35,14 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                     this._venues4square1 = 'https://api.foursquare.com/v2/venues/517f1985e4b09ee45be0717e?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
                     this._venues4square = 'https://api.foursquare.com/v2/venues/search?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
                     this._explore4square = 'https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
-                    this._version = '20151127';
+                    this._api = 'https://api.foursquare.com/v2';
+                    this._v = '20151127';
                     this._client_id = '5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO';
                     this._client_secret = 'XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
                 }
                 VenueService.prototype.getVenueById = function (venueId) {
                     console.log('getVenueById ' + venueId);
-                    var venue4square1 = "https://api.foursquare.com/v2/venues/" + venueId + "?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2";
-                    //this._venues4square1 = 'https://api.foursquare.com/v2/venues/' + venueId + '?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
+                    var venue4square1 = this._api + "/venues/" + venueId + "?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2";
                     return this.http.get(venue4square1)
                         .map(function (res) { return res.json().response.venue; })
                         .do(function (data) { return console.log(data); }) // eyeball results in the console
@@ -77,10 +80,43 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                     })
                         .catch(this.handleError);
                 };
+                VenueService.prototype.getCategories = function () {
+                    var _this = this;
+                    console.log('getVenues');
+                    var cat_url = this._api + "/venues/categories?v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
+                    return this.http.get(cat_url)
+                        .map(function (res) { return res.json().response.categories; })
+                        .do(function (data) { return console.log(data); }) // eyeball results in the console
+                        .map(function (cats) {
+                        var result = [];
+                        if (cats) {
+                            cats.forEach(function (cat) {
+                                console.log(cat.name);
+                                //if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
+                                result.push(new cat_item_1.CatItem(cat.id, cat.name, cat.icon.prefix + 'bg_32.png', _this.getCatArray(cat.categories)));
+                            });
+                        }
+                        console.log('RESULT');
+                        console.log(result);
+                        return result;
+                    })
+                        .catch(this.handleError);
+                };
+                VenueService.prototype.getCatArray = function (categories) {
+                    var _this = this;
+                    var result = [];
+                    if (categories) {
+                        categories.forEach(function (cat) {
+                            //console.log('recursive ' + cat.name);
+                            result.push(new cat_item_1.CatItem(cat.id, cat.name, cat.icon.prefix + 'bg_32.png', _this.getCatArray(cat.categories)));
+                        });
+                    }
+                    return result;
+                };
                 VenueService.prototype.exploreVenues = function (exploreFilter) {
-                    var url_explore = "https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=" + exploreFilter.section + "&v=" + this._version + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
+                    var url_explore = this._api + "/venues/explore?ll=32.536187,-117.008005&section=" + exploreFilter.section + "&v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
                     if (exploreFilter.query) {
-                        url_explore = "https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&query=" + exploreFilter.query + "&v=" + this._version + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
+                        url_explore = this._api + "/venues/explore?ll=32.536187,-117.008005&query=" + exploreFilter.query + "&v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
                     }
                     console.log('exploreVenues ' + url_explore);
                     return this.http.get(url_explore)

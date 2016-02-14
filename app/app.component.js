@@ -1,4 +1,4 @@
-System.register(['angular2/core', './venue.service', './venue-list.component', './venue-detail.component', './ui-tabs', './forms/explore-form.component', 'angular2/http'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', './venue.service', './venue-list.component', './venue-detail.component', './ui-tabs', './forms/explore-form.component', './cat-view/cat-view'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,12 +8,15 @@ System.register(['angular2/core', './venue.service', './venue-list.component', '
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, venue_service_1, venue_list_component_1, venue_detail_component_1, ui_tabs_1, explore_form_component_1, http_1;
+    var core_1, http_1, venue_service_1, venue_list_component_1, venue_detail_component_1, ui_tabs_1, explore_form_component_1, cat_view_1;
     var AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
             },
             function (venue_service_1_1) {
                 venue_service_1 = venue_service_1_1;
@@ -30,8 +33,8 @@ System.register(['angular2/core', './venue.service', './venue-list.component', '
             function (explore_form_component_1_1) {
                 explore_form_component_1 = explore_form_component_1_1;
             },
-            function (http_1_1) {
-                http_1 = http_1_1;
+            function (cat_view_1_1) {
+                cat_view_1 = cat_view_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -49,18 +52,23 @@ System.register(['angular2/core', './venue.service', './venue-list.component', '
                     this._venueService.exploreVenues(exploreFilter)
                         .subscribe(function (venues) { return _this.venueList = venues; });
                 };
+                AppComponent.prototype.ngOnInit = function () {
+                    this.getVenues();
+                    this.getCategories();
+                };
                 AppComponent.prototype.getVenues = function () {
                     var _this = this;
                     this._venueService.getVenuesMock().then(function (venues) { return _this.venueList = venues; });
                 };
-                AppComponent.prototype.ngOnInit = function () {
-                    this.getVenues();
+                AppComponent.prototype.getCategories = function () {
+                    var _this = this;
+                    this._venueService.getCategories().subscribe(function (cats) { return _this.categories = cats; });
                 };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'fuji-mansion-app',
-                        template: "<h1 style=\"background:#f2efe9;\">{{title}}</h1>\n  <div class=\"leftColumn\">  \n    <ui-tabs>\n      <template ui-pane title='Explore' active=\"true\">\n        <explore-form (formSubmit)=\"exploreVenues($event)\"></explore-form>\n      </template>\n      <template ui-pane title='Search'>\n        Search items #Todo.\n      </template>\n    </ui-tabs>\n    <venue-list [venues]=\"venueList\" (venueClick)=\"onSelect($event)\"></venue-list>\n  </div>\n  <div class=\"rightColumn\">\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  </div>\n  ",
-                        directives: [venue_list_component_1.VenueListComponent, venue_detail_component_1.VenueDetailComponent, ui_tabs_1.UiTabs, ui_tabs_1.UiPane, explore_form_component_1.ExploreFormComponent],
+                        template: "<h1 style=\"background:#f2efe9;\">{{title}}</h1>\n  <div class=\"leftColumn\">  \n    <ui-tabs>\n      <template ui-pane title='Explore' active=\"true\">\n        <explore-form (formSubmit)=\"exploreVenues($event)\"></explore-form>\n      </template>\n      <template ui-pane title='Search'>\n        <cat-view [categories]=\"categories\"></cat-view>\n      </template>\n    </ui-tabs>\n    <venue-list [venues]=\"venueList\" (venueClick)=\"onSelect($event)\"></venue-list>\n  </div>\n  <div class=\"rightColumn\">\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  </div>\n  ",
+                        directives: [venue_list_component_1.VenueListComponent, venue_detail_component_1.VenueDetailComponent, ui_tabs_1.UiTabs, ui_tabs_1.UiPane, explore_form_component_1.ExploreFormComponent, cat_view_1.CatView],
                         providers: [http_1.HTTP_PROVIDERS, venue_service_1.VenueService],
                         styleUrls: ['app/venues.css']
                     }), 
