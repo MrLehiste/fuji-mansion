@@ -58,9 +58,11 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                     })
                         .catch(this.handleError);
                 };
-                VenueService.prototype.searchVenues = function (categoryId) {
-                    console.log('searchVenues');
-                    var url_search = this._api + "/venues/search?ll=32.536187,-117.008005&categoryId=" + categoryId + "&v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
+                VenueService.prototype.searchVenues = function (searchFilter) {
+                    var paraCat = (searchFilter.categoryId) ? '&categoryId=' + searchFilter.categoryId : '';
+                    var paraQuery = (searchFilter.query) ? '&query=' + searchFilter.query : '';
+                    var url_search = this._api + "/venues/search?ll=32.536187,-117.008005" + paraCat + paraQuery + "&v=" + this._v + "&client_id=" + this._client_id + "&client_secret=" + this._client_secret;
+                    console.log('searchVenues: ' + url_search);
                     return this.http.get(url_search)
                         .map(function (res) { return res.json().response.venues; })
                         .do(function (data) { return console.log(data); }) // eyeball results in the console

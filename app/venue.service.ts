@@ -5,6 +5,7 @@ import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 import {ExploreFilter} from './forms/explore-filter';
 import {CatItem} from './cat-view/cat-item';
+import {SearchFilter} from './forms/search-filter';
 
 @Injectable()
 export class VenueService {
@@ -34,9 +35,11 @@ export class VenueService {
         .catch(this.handleError);
   }
 
-  searchVenues (categoryId: string) {
-    console.log('searchVenues');
-    let url_search = `${this._api}/venues/search?ll=32.536187,-117.008005&categoryId=${categoryId}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+  searchVenues (searchFilter: SearchFilter) {
+    let paraCat = (searchFilter.categoryId) ? '&categoryId=' + searchFilter.categoryId : '';
+    let paraQuery = (searchFilter.query) ? '&query=' + searchFilter.query : '';
+    let url_search = `${this._api}/venues/search?ll=32.536187,-117.008005${paraCat}${paraQuery}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    console.log('searchVenues: ' + url_search);
     return this.http.get(url_search)
         .map(res => res.json().response.venues)
         .do(data => console.log(data)) // eyeball results in the console
@@ -129,7 +132,7 @@ export class VenueService {
             if (resVenues) {
                 resVenues.forEach((ven) => {
                     console.log(ven.name);
-                    var iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.formattedAddress, icon: ven.icon, bestPhoto: ven.bestPhoto};
+                    let iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.formattedAddress, icon: ven.icon, bestPhoto: ven.bestPhoto};
                     result.push(iVenue);
                     //result.push(new Venue(ven.id, ven.name, ven.formattedAddress, ven.icon, ven.bestPhoto));
                 });

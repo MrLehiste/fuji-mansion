@@ -12,6 +12,7 @@ import {NgForm}    from 'angular2/common';
 import {ExploreFilter} from './forms/explore-filter';
 import {CatView} from './cat-view/cat-view';
 import {CatItem} from './cat-view/cat-item';
+import {SearchFilter} from './forms/search-filter';
 
 @Component({
     selector: 'fuji-mansion-app',
@@ -29,6 +30,10 @@ import {CatItem} from './cat-view/cat-item';
         <div *ngIf="_showCats" style="display: inline;">
           <cat-view [categories]="categories"></cat-view>
         </div>
+        <br>
+        <label for="query">Search:</label>
+        <input type="text" class="form-control" [(ngModel)]="searchQuery" style="width: 150px; display: inline;">
+        
         <button type="button" class="btn btn-primary" (click)="getSelectedCategories()">
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search Venues
         </button>
@@ -52,6 +57,7 @@ export class AppComponent implements OnInit {
   public venueList: Venue[];
   categories: Array<CatItem>;
   private _showCats: boolean = false;
+  searchQuery: string;
   
   constructor(private _venueService: VenueService) { }
   
@@ -82,7 +88,8 @@ export class AppComponent implements OnInit {
       });
     }
     console.log('RESULT:' + result.toString());
-    this._venueService.searchVenues(result.toString()).subscribe(vens => this.venueList = vens);
+    let srchFltr : SearchFilter = { categoryId: result.toString(), query: this.searchQuery };
+    this._venueService.searchVenues(srchFltr).subscribe(vens => this.venueList = vens);
     this._showCats = false;
   }
   
