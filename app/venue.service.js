@@ -71,8 +71,8 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                                 console.log(ven.name);
                                 var iVenue = { id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress };
                                 if (ven.categories[0]) {
-                                    iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png';
-                                }
+                                    iVenue.icon = ven.categories[0].icon.prefix + '32.png';
+                                } //'bg_
                                 result.push(iVenue);
                                 //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));
                             });

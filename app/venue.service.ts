@@ -46,7 +46,7 @@ export class VenueService {
                 resVenues.forEach((ven) => {
                     console.log(ven.name);
                     var iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress};
-                    if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
+                    if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + '32.png' } //'bg_
                     result.push(iVenue);
                     //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));
                 });

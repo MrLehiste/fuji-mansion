@@ -22,7 +22,13 @@ import {CatItem} from './cat-view/cat-item';
         <explore-form (formSubmit)="exploreVenues($event)"></explore-form>
       </template>
       <template ui-pane title='Search'>
-        <cat-view [categories]="categories"></cat-view>
+        <label>Category:</label>
+        <button type="button" class="btn btn-default" (click)="showHideCats()">
+          <span class="glyphicon" [class.glyphicon-plus]="!_showCats" [class.glyphicon-minus]="_showCats" aria-hidden="true"></span> 
+        </button>
+        <div *ngIf="_showCats" style="display: inline;">
+          <cat-view [categories]="categories"></cat-view>
+        </div>
         <button type="button" class="btn btn-primary" (click)="getSelectedCategories()">
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search Venues
         </button>
@@ -45,8 +51,13 @@ export class AppComponent implements OnInit {
   public selectedVenue: Venue;  
   public venueList: Venue[];
   categories: Array<CatItem>;
+  private _showCats: boolean = false;
   
   constructor(private _venueService: VenueService) { }
+  
+  showHideCats(){
+    this._showCats = !this._showCats; 
+  }
   
   onSelect(venue: Venue) {
     console.log(`Selected venue: ${venue}`);
@@ -72,6 +83,7 @@ export class AppComponent implements OnInit {
     }
     console.log('RESULT:' + result.toString());
     this._venueService.searchVenues(result.toString()).subscribe(vens => this.venueList = vens);
+    this._showCats = false;
   }
   
   ngOnInit() {
