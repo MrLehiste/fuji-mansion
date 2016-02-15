@@ -27,7 +27,8 @@ export class VenueService {
         .map(res => res.json().response.venue)
         .do(data => console.log(data)) // eyeball results in the console
         .map((ven) => {
-            let iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress};
+            let iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress
+                , canonicalUrl: ven.canonicalUrl};
             if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
             if(ven.bestPhoto){ iVenue.bestPhoto = ven.bestPhoto.prefix + 'width400' + ven.bestPhoto.suffix }
             return iVenue;
@@ -110,7 +111,8 @@ export class VenueService {
             if (resVenues) {
                 resVenues.forEach((ven) => {
                     console.log(ven.venue.name);
-                    var iVenue: Venue = {id: ven.venue.id, name: ven.venue.name, formattedAddress: ven.venue.location.formattedAddress};
+                    var iVenue: Venue = {id: ven.venue.id, name: ven.venue.name, formattedAddress: ven.venue.location.formattedAddress
+                        , rating: ven.venue.rating, ratingColor: ven.venue.ratingColor, ratingSignals: ven.venue.ratingSignals};
                     if(ven.venue.categories[0]){ iVenue.icon = ven.venue.categories[0].icon.prefix + '32.png' }
                     result.push(iVenue);
                     //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));

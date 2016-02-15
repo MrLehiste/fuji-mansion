@@ -3,7 +3,11 @@ export interface Venue {
   name: string;
   formattedAddress?: string;
   icon?: string;
-  bestPhoto?: string;  
+  bestPhoto?: string;
+  canonicalUrl?: string;
+  rating?: string;
+  ratingColor?: string;
+  ratingSignals?: string;
 }
 
 /*

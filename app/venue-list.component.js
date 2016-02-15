@@ -33,7 +33,7 @@ System.register(['angular2/core'], function(exports_1) {
                 VenueListComponent = __decorate([
                     core_1.Component({
                         selector: 'venue-list',
-                        template: "<div id=\"\" style=\"overflow-y: scroll; height:480px; width: 360px;\">\n  <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> {{venue.name}} \n    </li>\n  </ul></div>\n  ",
+                        template: "<div id=\"\" style=\"overflow-y: scroll; height:480px; width: 360px;\">\n  <ul class=\"venues\">\n    <li *ngFor=\"#venue of venues\"\n      [class.selected]=\"venue === selectedVenue\"\n      (click)=\"onSelect(venue)\">\n      <span class=\"badge\"><img src={{venue.icon}}></span> \n      <span *ngIf=\"venue.rating\" class=\"btn btn-circle\" style=\"background-color: #{{venue.ratingColor}}\">{{venue.rating}}</span> {{venue.name}}\n    </li>\n  </ul></div>\n  ",
                         styleUrls: ['app/venues.css'],
                         inputs: ['venues']
                     }), 

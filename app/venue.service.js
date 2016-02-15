@@ -47,7 +47,8 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                         .map(function (res) { return res.json().response.venue; })
                         .do(function (data) { return console.log(data); }) // eyeball results in the console
                         .map(function (ven) {
-                        var iVenue = { id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress };
+                        var iVenue = { id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress,
+                            canonicalUrl: ven.canonicalUrl };
                         if (ven.categories[0]) {
                             iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png';
                         }
@@ -130,7 +131,8 @@ System.register(['./mock-venues', 'angular2/core', 'angular2/http', 'rxjs/Observ
                         if (resVenues) {
                             resVenues.forEach(function (ven) {
                                 console.log(ven.venue.name);
-                                var iVenue = { id: ven.venue.id, name: ven.venue.name, formattedAddress: ven.venue.location.formattedAddress };
+                                var iVenue = { id: ven.venue.id, name: ven.venue.name, formattedAddress: ven.venue.location.formattedAddress,
+                                    rating: ven.venue.rating, ratingColor: ven.venue.ratingColor, ratingSignals: ven.venue.ratingSignals };
                                 if (ven.venue.categories[0]) {
                                     iVenue.icon = ven.venue.categories[0].icon.prefix + '32.png';
                                 }

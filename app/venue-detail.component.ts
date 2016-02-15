@@ -11,6 +11,7 @@ import {Venue} from './venue';
         <input [(ngModel)]="venue.name" placeholder="name"/>
       </div>
       <div><label>Address: </label>{{venue.formattedAddress}}</div>
+      <div><label>Foursquare Link: </label><a href="{{venue.canonicalUrl}}" target="_black">Click</a></div>
       <div><img src={{venue.bestPhoto}}></div>
     </div>
   `,

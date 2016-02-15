@@ -22,7 +22,7 @@ System.register(['angular2/core'], function(exports_1) {
                 VenueDetailComponent = __decorate([
                     core_1.Component({
                         selector: 'my-venue-detail',
-                        template: "\n    <div *ngIf=\"venue\">\n      <h2>{{venue.name}} details!</h2>\n      <div><label>id: </label>{{venue.id}}</div>\n      <div>\n        <label>name: </label>\n        <input [(ngModel)]=\"venue.name\" placeholder=\"name\"/>\n      </div>\n      <div><label>Address: </label>{{venue.formattedAddress}}</div>\n      <div><img src={{venue.bestPhoto}}></div>\n    </div>\n  ",
+                        template: "\n    <div *ngIf=\"venue\">\n      <h2>{{venue.name}} details!</h2>\n      <div><label>id: </label>{{venue.id}}</div>\n      <div>\n        <label>name: </label>\n        <input [(ngModel)]=\"venue.name\" placeholder=\"name\"/>\n      </div>\n      <div><label>Address: </label>{{venue.formattedAddress}}</div>\n      <div><label>Foursquare Link: </label><a href=\"{{venue.canonicalUrl}}\" target=\"_black\">Click</a></div>\n      <div><img src={{venue.bestPhoto}}></div>\n    </div>\n  ",
                         inputs: ['venue']
                     }), 
                     __metadata('design:paramtypes', [])
