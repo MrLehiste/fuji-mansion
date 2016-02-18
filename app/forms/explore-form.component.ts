@@ -1,6 +1,5 @@
-import {Component, View, EventEmitter, Output} from 'angular2/core';
-import {NgForm}    from 'angular2/common';
-import {FormBuilder, ControlGroup, Validators, FORM_DIRECTIVES} from 'angular2/common';
+import {Component, View, EventEmitter, Output, Input} from 'angular2/core';
+import {NgForm, FormBuilder, ControlGroup, Validators, FORM_DIRECTIVES} from 'angular2/common';
 import {ExploreFilter} from './explore-filter';
 
 @Component({
@@ -10,6 +9,9 @@ import {ExploreFilter} from './explore-filter';
   template: `
   <form [ngFormModel]="exploreForm" #f="ngForm" (ngSubmit)="onSubmit(f.value)">
     <div class="form-group" style="padding-top: 5px;">
+      <label for="near">Location:</label>
+      <input type="text" class="form-control" ngControl="near" [value]="nearloc" style="width: 150px; display: inline;">
+      <br>
       <div style="display: inline;">
         <label for="section">Pick Section:</label>
         <select class="form-control" required style="width: 120px; display: inline;"
@@ -26,8 +28,10 @@ import {ExploreFilter} from './explore-filter';
     </button>
   </form>`
   ,directives: [FORM_DIRECTIVES]
+  ,inputs: ['nearloc']
 })
 export class ExploreFormComponent {
+  //@Input() nearloc: string;
   @Output() formSubmit: EventEmitter<any> = new EventEmitter();
   sections = ['food', 'drinks', 'coffee', 'shops', 'arts', 'outdoors', 'sights'
     , 'trending', 'specials'
@@ -43,6 +47,7 @@ export class ExploreFormComponent {
     this.exploreForm = fb.group({
       section: ['coffee', Validators.required]
       ,query: ['']
+      ,near:['']
     });
   }
 }

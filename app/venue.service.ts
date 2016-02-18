@@ -103,8 +103,12 @@ export class VenueService {
   }
   
   exploreVenues(exploreFilter: ExploreFilter) {
-    let url_explore = `${this._api}/venues/explore?ll=32.536187,-117.008005&section=${exploreFilter.section}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
-    if(exploreFilter.query){ url_explore = `${this._api}/venues/explore?ll=32.536187,-117.008005&query=${exploreFilter.query}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`; }
+    let paraSectionOrQuery = (exploreFilter.section) ? '&section=' + exploreFilter.section : '';
+    paraSectionOrQuery = (exploreFilter.query) ? '&query=' + exploreFilter.query : paraSectionOrQuery;
+    let paraLoc = (exploreFilter.near) ? 'near=' + exploreFilter.near : 'll=' + (exploreFilter.ll || this._default_ll);
+    let url_explore = `${this._api}/venues/explore?${paraLoc}${paraSectionOrQuery}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    //let url_explore = `${this._api}/venues/explore?ll=32.536187,-117.008005&section=${exploreFilter.section}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    //if(exploreFilter.query){ url_explore = `${this._api}/venues/explore?ll=32.536187,-117.008005&query=${exploreFilter.query}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`; }
     console.log('exploreVenues ' + url_explore);
     return this.http.get(url_explore)
         .map(res => res.json().response.groups[0].items)

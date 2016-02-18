@@ -20,7 +20,7 @@ import {SearchFilter} from './forms/search-filter';
   <div class="leftColumn">  
     <ui-tabs>
       <template ui-pane title='Explore' active="true">
-        <explore-form (formSubmit)="exploreVenues($event)"></explore-form>
+        <explore-form [nearloc]="searchLoc" (formSubmit)="exploreVenues($event)"></explore-form>
       </template>
       <template ui-pane title='Search'>
         <label>Location:</label>
@@ -71,11 +71,12 @@ export class AppComponent implements OnInit {
   }
   
   onSelect(venue: Venue) {
-    console.log(`Selected venue: ${venue}`);
+    //console.log(`Selected venue: ${venue}`);
     this._venueService.getVenueById(venue.id).subscribe(venue => this.selectedVenue = venue);
   }
   
   exploreVenues(exploreFilter: ExploreFilter) {
+    exploreFilter.ll = this.userLoc;
     this._venueService.exploreVenues(exploreFilter)
       .subscribe(
         venues => this.venueList = venues
@@ -107,6 +108,7 @@ export class AppComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.searchLoc = "Corona, CA";
     this.getVenues();
     this.getCategories();
     this.initGeoLocation();
@@ -121,7 +123,7 @@ export class AppComponent implements OnInit {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
             this.userLoc = `${position.coords.latitude},${position.coords.longitude}`;
-            console.log('userLoc: ' + this.userLoc);
+            console.log('initGeoLocation() userLoc: ' + this.userLoc);
         });
     } 
   }

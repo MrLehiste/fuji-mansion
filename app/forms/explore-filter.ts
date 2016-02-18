@@ -1,4 +1,6 @@
 export interface ExploreFilter {
   section: string;
-  query?: string;  
+  query?: string;
+  near?: string;
+  ll?: string;
 }

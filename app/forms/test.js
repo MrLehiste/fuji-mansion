@@ -37,7 +37,7 @@ System.register(['angular2/core'], function(exports_1) {
                 SimpleTestComponent = __decorate([
                     core_1.Component({
                         selector: 'simple-test',
-                        template: "<button type=\"button\" class=\"btn btn-primary\" (click)=\"getSearchResults()\">\n          <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span> Search Venues\n        </button>"
+                        template: "<button type=\"button\" class=\"btn btn-primary\" (click)=\"getSearchResults()\">\n            <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span> Search Venues\n            </button>"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SimpleTestComponent);

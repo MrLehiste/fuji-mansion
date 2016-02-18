@@ -48,11 +48,12 @@ System.register(['angular2/core', 'angular2/http', './venue.service', './venue-l
                 };
                 AppComponent.prototype.onSelect = function (venue) {
                     var _this = this;
-                    console.log("Selected venue: " + venue);
+                    //console.log(`Selected venue: ${venue}`);
                     this._venueService.getVenueById(venue.id).subscribe(function (venue) { return _this.selectedVenue = venue; });
                 };
                 AppComponent.prototype.exploreVenues = function (exploreFilter) {
                     var _this = this;
+                    exploreFilter.ll = this.userLoc;
                     this._venueService.exploreVenues(exploreFilter)
                         .subscribe(function (venues) { return _this.venueList = venues; });
                 };
@@ -78,6 +79,7 @@ System.register(['angular2/core', 'angular2/http', './venue.service', './venue-l
                     this._showCats = false;
                 };
                 AppComponent.prototype.ngOnInit = function () {
+                    this.searchLoc = "Corona, CA";
                     this.getVenues();
                     this.getCategories();
                     this.initGeoLocation();
@@ -95,14 +97,14 @@ System.register(['angular2/core', 'angular2/http', './venue.service', './venue-l
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             _this.userLoc = position.coords.latitude + "," + position.coords.longitude;
-                            console.log('userLoc: ' + _this.userLoc);
+                            console.log('initGeoLocation() userLoc: ' + _this.userLoc);
                         });
                     }
                 };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'fuji-mansion-app',
-                        template: "<h1 style=\"background:#f2efe9;\">{{title}}</h1>\n  <div class=\"leftColumn\">  \n    <ui-tabs>\n      <template ui-pane title='Explore' active=\"true\">\n        <explore-form (formSubmit)=\"exploreVenues($event)\"></explore-form>\n      </template>\n      <template ui-pane title='Search'>\n        <label>Location:</label>\n        <input type=\"text\" class=\"form-control\" [(ngModel)]=\"searchLoc\" style=\"width: 150px; display: inline;\">\n        <br>\n        <label>Category:</label>\n        <button type=\"button\" class=\"btn btn-default\" (click)=\"showHideCats()\">\n          <span class=\"glyphicon\" [class.glyphicon-plus]=\"!_showCats\" [class.glyphicon-minus]=\"_showCats\" aria-hidden=\"true\"></span> \n        </button>\n        <div *ngIf=\"_showCats\" style=\"display: inline;\">\n          <cat-view [categories]=\"categories\"></cat-view>\n        </div>\n        <br>\n        <label for=\"query\">Search:</label>\n        <input type=\"text\" class=\"form-control\" [(ngModel)]=\"searchQuery\" style=\"width: 150px; display: inline;\">\n        \n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"getSearchResults()\">\n          <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span> Search Venues\n        </button>\n      </template>\n    </ui-tabs>\n    <venue-list [venues]=\"venueList\" (venueClick)=\"onSelect($event)\"></venue-list>\n  </div>\n  <div class=\"rightColumn\">\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  </div>\n  ",
+                        template: "<h1 style=\"background:#f2efe9;\">{{title}}</h1>\n  <div class=\"leftColumn\">  \n    <ui-tabs>\n      <template ui-pane title='Explore' active=\"true\">\n        <explore-form [nearloc]=\"searchLoc\" (formSubmit)=\"exploreVenues($event)\"></explore-form>\n      </template>\n      <template ui-pane title='Search'>\n        <label>Location:</label>\n        <input type=\"text\" class=\"form-control\" [(ngModel)]=\"searchLoc\" style=\"width: 150px; display: inline;\">\n        <br>\n        <label>Category:</label>\n        <button type=\"button\" class=\"btn btn-default\" (click)=\"showHideCats()\">\n          <span class=\"glyphicon\" [class.glyphicon-plus]=\"!_showCats\" [class.glyphicon-minus]=\"_showCats\" aria-hidden=\"true\"></span> \n        </button>\n        <div *ngIf=\"_showCats\" style=\"display: inline;\">\n          <cat-view [categories]=\"categories\"></cat-view>\n        </div>\n        <br>\n        <label for=\"query\">Search:</label>\n        <input type=\"text\" class=\"form-control\" [(ngModel)]=\"searchQuery\" style=\"width: 150px; display: inline;\">\n        \n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"getSearchResults()\">\n          <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span> Search Venues\n        </button>\n      </template>\n    </ui-tabs>\n    <venue-list [venues]=\"venueList\" (venueClick)=\"onSelect($event)\"></venue-list>\n  </div>\n  <div class=\"rightColumn\">\n    <my-venue-detail [venue]=\"selectedVenue\"></my-venue-detail>\n  </div>\n  ",
                         directives: [venue_list_component_1.VenueListComponent, venue_detail_component_1.VenueDetailComponent, ui_tabs_1.UiTabs, ui_tabs_1.UiPane, explore_form_component_1.ExploreFormComponent, cat_view_1.CatView],
                         providers: [http_1.HTTP_PROVIDERS, venue_service_1.VenueService],
                         styleUrls: ['app/venues.css']
