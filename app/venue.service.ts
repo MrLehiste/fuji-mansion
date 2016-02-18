@@ -15,6 +15,7 @@ export class VenueService {
   private _venues4square = 'https://api.foursquare.com/v2/venues/search?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   private _explore4square = 'https://api.foursquare.com/v2/venues/explore?ll=32.536187,-117.008005&section=food&v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2';
   
+  private _default_ll = '32.536187,-117.008005';
   private _api = 'https://api.foursquare.com/v2';
   private _v = '20151127';
   private _client_id = '5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO';
@@ -25,7 +26,7 @@ export class VenueService {
     let venue4square1 = `${this._api}/venues/${venueId}?v=20151127&client_id=5LCPVBLQEUDUDDVSCQYXTIA4P10LP20C3LKZ5NBM4NQWCIPO&client_secret=XQKNMOWKX5RAV30XEJQLJIDVU2OJHJJRZJPB5PT0NWWNUWX2`;
     return this.http.get(venue4square1)
         .map(res => res.json().response.venue)
-        .do(data => console.log(data)) // eyeball results in the console
+        //.do(data => console.log(data)) // eyeball results in the console
         .map((ven) => {
             let iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress
                 , canonicalUrl: ven.canonicalUrl};
@@ -39,45 +40,47 @@ export class VenueService {
   searchVenues (searchFilter: SearchFilter) {
     let paraCat = (searchFilter.categoryId) ? '&categoryId=' + searchFilter.categoryId : '';
     let paraQuery = (searchFilter.query) ? '&query=' + searchFilter.query : '';
-    let url_search = `${this._api}/venues/search?ll=32.536187,-117.008005${paraCat}${paraQuery}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
+    let paraLoc = (searchFilter.near) ? 'near=' + searchFilter.near : 'll=' + (searchFilter.ll || this._default_ll);
+    let url_search = `${this._api}/venues/search?${paraLoc}${paraCat}${paraQuery}&v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
     console.log('searchVenues: ' + url_search);
     return this.http.get(url_search)
         .map(res => res.json().response.venues)
-        .do(data => console.log(data)) // eyeball results in the console
+        //.do(data => console.log(data)) // eyeball results in the console
         .map((resVenues: Array<any>) => {
             let result:Array<Venue> = [];
             if (resVenues) {
                 resVenues.forEach((ven) => {
-                    console.log(ven.name);
+                    //console.log(ven.name);
                     var iVenue: Venue = {id: ven.id, name: ven.name, formattedAddress: ven.location.formattedAddress};
                     if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + '32.png' } //'bg_
                     result.push(iVenue);
                     //result.push(new Venue(ven.id, ven.name, ven.location.formattedAddress, ven.categories[0].icon.prefix + 'bg_32.png' || '', ven.bestPhoto));
                 });
             }
+            console.log('# of Search Results: ' + result.length);
             return result;
         })
         .catch(this.handleError);
   }
   
   getCategories () {
-    console.log('getCategories');
+    //console.log('getCategories');
     let cat_url = `${this._api}/venues/categories?v=${this._v}&client_id=${this._client_id}&client_secret=${this._client_secret}`;
     return this.http.get(cat_url)
         .map(res => res.json().response.categories)
-        .do(data => console.log(data)) // eyeball results in the console
+        //.do(data => console.log(data)) // eyeball results in the console
         .map((cats: Array<any>) => {
             let result:Array<CatItem> = [];
             if (cats) {
                 cats.forEach((cat) => {
-                    console.log(cat.name);
+                    //console.log(cat.name);
                     //if(ven.categories[0]){ iVenue.icon = ven.categories[0].icon.prefix + 'bg_32.png' }
                     result.push(new CatItem(cat.id, cat.name, cat.icon.prefix + 'bg_32.png'
                     , this.getCatArray(cat.categories)
                     ));
                 });
             }
-            console.log('RESULT');
+            console.log('getCategories() RESULT');
             console.log(result);
             return result;
         })
@@ -105,7 +108,7 @@ export class VenueService {
     console.log('exploreVenues ' + url_explore);
     return this.http.get(url_explore)
         .map(res => res.json().response.groups[0].items)
-        .do(data => console.log(data)) // eyeball results in the console
+        //.do(data => console.log(data)) // eyeball results in the console
         .map((resVenues: Array<any>) => {
             let result:Array<Venue> = [];
             if (resVenues) {
@@ -128,7 +131,7 @@ export class VenueService {
     return this.http.get(this._venuesUrl)
         //.map(res => <Venue[]> res.json().data)
         .map(res => res.json())
-        .do(data => console.log(data)) // eyeball results in the console
+        //.do(data => console.log(data)) // eyeball results in the console
         .map((resVenues: Array<any>) => {
             let result:Array<Venue> = [];
             if (resVenues) {

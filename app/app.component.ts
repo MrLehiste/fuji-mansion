@@ -23,6 +23,9 @@ import {SearchFilter} from './forms/search-filter';
         <explore-form (formSubmit)="exploreVenues($event)"></explore-form>
       </template>
       <template ui-pane title='Search'>
+        <label>Location:</label>
+        <input type="text" class="form-control" [(ngModel)]="searchLoc" style="width: 150px; display: inline;">
+        <br>
         <label>Category:</label>
         <button type="button" class="btn btn-default" (click)="showHideCats()">
           <span class="glyphicon" [class.glyphicon-plus]="!_showCats" [class.glyphicon-minus]="_showCats" aria-hidden="true"></span> 
@@ -34,7 +37,7 @@ import {SearchFilter} from './forms/search-filter';
         <label for="query">Search:</label>
         <input type="text" class="form-control" [(ngModel)]="searchQuery" style="width: 150px; display: inline;">
         
-        <button type="button" class="btn btn-primary" (click)="getSelectedCategories()">
+        <button type="button" class="btn btn-primary" (click)="getSearchResults()">
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search Venues
         </button>
       </template>
@@ -57,7 +60,9 @@ export class AppComponent implements OnInit {
   public venueList: Venue[];
   categories: Array<CatItem>;
   private _showCats: boolean = false;
-  searchQuery: string;
+  public searchQuery: string;
+  public searchLoc: string;
+  public userLoc: string;
   
   constructor(private _venueService: VenueService) { }
   
@@ -78,7 +83,7 @@ export class AppComponent implements OnInit {
       );
   }
   
-  getSelectedCategories(){
+  getSearchResults(){
     let result: Array<string> = [];
     
     if(this.categories.length > 0){
@@ -87,8 +92,16 @@ export class AppComponent implements OnInit {
           result.push.apply( result, cat.getCheckedIds() );
       });
     }
-    console.log('RESULT:' + result.toString());
-    let srchFltr : SearchFilter = { categoryId: result.toString(), query: this.searchQuery };
+    console.log('searchLoc: ' + this.searchLoc);
+    console.log('searchQuery: ' + this.searchQuery);
+    console.log('userLoc: ' + this.userLoc);
+    //console.log('# of SelectedCategories: ' + result.length);
+    let srchFltr : SearchFilter = { 
+        categoryId: result.toString()
+        , query: this.searchQuery
+        , near: this.searchLoc
+        , ll: this.userLoc
+    };
     this._venueService.searchVenues(srchFltr).subscribe(vens => this.venueList = vens);
     this._showCats = false;
   }
@@ -96,12 +109,21 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.getVenues();
     this.getCategories();
+    this.initGeoLocation();
   }
   getVenues() {
     this._venueService.getVenuesMock().then(venues => this.venueList = venues);
   }
   getCategories() {
     this._venueService.getCategories().subscribe(cats => this.categories = cats);
+  }
+  initGeoLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            this.userLoc = `${position.coords.latitude},${position.coords.longitude}`;
+            console.log('userLoc: ' + this.userLoc);
+        });
+    } 
   }
   
 }
