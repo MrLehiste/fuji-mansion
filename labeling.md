@@ -2,7 +2,6 @@ http://victorsavkin.com/post/128785099226/mindful-programmer
 
 -sync explore & search locations (not done)
 
--clean up git files (ignore .js, .jsmap)
 
 -reogranize project files
 
@@ -11,5 +10,8 @@ http://victorsavkin.com/post/128785099226/mindful-programmer
 -clean up console.logs
 
 -USABILITY FEATURES
---Distance
+++Distance (done with meters)
 --Cat hover
+
+2/18/2016
+-clean up git files (ignore .js, .jsmap)
