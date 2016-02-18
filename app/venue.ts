@@ -8,6 +8,7 @@ export interface Venue {
   rating?: string;
   ratingColor?: string;
   ratingSignals?: string;
+  distance?: string;
 }
 
 /*

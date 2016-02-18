@@ -8,5 +8,8 @@ http://victorsavkin.com/post/128785099226/mindful-programmer
 
 -write tests
 
--map
+-clean up console.logs
 
+-USABILITY FEATURES
+--Distance
+--Cat hover

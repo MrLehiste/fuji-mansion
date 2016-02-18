@@ -9,7 +9,8 @@ import {Venue}        from './venue';
       [class.selected]="venue === selectedVenue"
       (click)="onSelect(venue)">
       <span class="badge"><img src={{venue.icon}}></span> 
-      <span *ngIf="venue.rating" class="btn btn-circle" style="background-color: #{{venue.ratingColor}}">{{venue.rating}}</span> {{venue.name}}
+      <span *ngIf="venue.rating" class="btn btn-circle" style="background-color: #{{venue.ratingColor}}">{{venue.rating}}</span>
+      &nbsp;{{venue.name}} <span *ngIf="venue.distance">({{venue.distance}} m)</span>
     </li>
   </ul></div>
   `
