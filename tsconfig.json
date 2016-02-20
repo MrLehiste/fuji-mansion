@@ -16,6 +16,6 @@
   ],
   "files": [
     "src/app/boot.ts",
-    "src/app/components/master.ts"
+    "src/app/master.component.ts"
   ]
 }

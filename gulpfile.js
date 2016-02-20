@@ -7,10 +7,16 @@ const tsconfig = require('tsconfig-glob');
 const browserSync = require('browser-sync');
 const reload = browserSync.reload;
 
+gulp.task('serve', ['build'], function() {
+  browserSync({ server: { baseDir: 'dist' } });
+  gulp.watch(['src/**/*'], ['buildAndReload']);
+});
 
-//gulp.task('default', function() { console.log('default gulp task'); });
+gulp.task('build', ['compile', 'copy:libs', 'copy:assets']);
+gulp.task('buildAndReload', ['build'], reload);
+gulp.task('default', ['build']);
 
-gulp.task('clean', function () {
+gulp.task('clean', ['tsconfig-glob'], function () {
   console.log('Deleting the contents of the distribution directory');
   return del('dist/**/*');
 });
@@ -23,6 +29,11 @@ gulp.task('compile', ['clean'], function () {
     .pipe(typescript(tscConfig.compilerOptions))
     .pipe(sourcemaps.write('.'))      // <--- sourcemaps
     .pipe(gulp.dest('dist/app'));
+});
+// copy static assets - i.e. non TypeScript compiled source
+gulp.task('copy:assets', ['clean'], function() {
+  return gulp.src(['src/**/*', '!src/**/*.ts'], { base : './src' })
+    .pipe(gulp.dest('dist'))
 });
 // copy dependencies
 gulp.task('copy:libs', ['clean'], function() {
@@ -39,30 +50,8 @@ gulp.task('copy:libs', ['clean'], function() {
     ])
     .pipe(gulp.dest('dist/lib'))
 });
-// copy static assets - i.e. non TypeScript compiled source
-gulp.task('copy:assets', ['clean'], function() {
-  return gulp.src(['src/**/*', '!src/**/*.ts'], { base : './src' })
-    .pipe(gulp.dest('dist'))
-});
 
+//rewrite tsconfig.json file
 gulp.task('tsconfig-glob', function () {
-  return tsconfig({
-    configPath: '.',
-    indent: 2
-  });
-});
+  return tsconfig({ configPath: '.', indent: 2 }); });
 
-// Run browsersync for development
-gulp.task('serve', ['build'], function() {
-  browserSync({
-    server: {
-      baseDir: 'dist'
-    }
-  });
-
-  gulp.watch(['src/**/*'], ['buildAndReload']);
-});
-
-gulp.task('build', ['compile', 'copy:libs', 'copy:assets']);
-gulp.task('buildAndReload', ['build'], reload);
-gulp.task('default', ['build']);

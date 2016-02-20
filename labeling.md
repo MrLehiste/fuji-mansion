@@ -28,3 +28,6 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 -Simple gulp file
 
 sudo npm install -g typescript 
+
+2/20/2016
+-gulpfile refactor
