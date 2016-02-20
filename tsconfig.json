@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "target": "es5",
     "module": "system",
     "moduleResolution": "node",
@@ -9,7 +10,12 @@
     "removeComments": false,
     "noImplicitAny": false
   },
-  "exclude": [
-    "node_modules"
+  "filesGlob": [
+    "src/**/*.ts",
+    "typings/**/*.d.ts"
+  ],
+  "files": [
+    "src/app/boot.ts",
+    "src/app/components/master.ts"
   ]
 }

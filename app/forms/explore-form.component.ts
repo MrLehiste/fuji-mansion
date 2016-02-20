@@ -28,10 +28,10 @@ import {ExploreFilter} from './explore-filter';
     </button>
   </form>`
   ,directives: [FORM_DIRECTIVES]
-  ,inputs: ['nearloc']
+  //,inputs: ['nearloc']
 })
 export class ExploreFormComponent {
-  //@Input() nearloc: string;
+  @Input() nearloc: string;
   @Output() formSubmit: EventEmitter<any> = new EventEmitter();
   sections = ['food', 'drinks', 'coffee', 'shops', 'arts', 'outdoors', 'sights'
     , 'trending', 'specials'
