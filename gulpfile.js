@@ -6,15 +6,21 @@ const sourcemaps = require('gulp-sourcemaps');
 const tsconfig = require('tsconfig-glob');
 const browserSync = require('browser-sync');
 const reload = browserSync.reload;
+const tslint = require('gulp-tslint');
 
 gulp.task('serve', ['build'], function() {
   browserSync({ server: { baseDir: 'dist' } });
   gulp.watch(['src/**/*'], ['buildAndReload']);
 });
-
-gulp.task('build', ['compile', 'copy:libs', 'copy:assets']);
+gulp.task('build', ['tslint', 'compile', 'copy:libs', 'copy:assets']);
 gulp.task('buildAndReload', ['build'], reload);
 gulp.task('default', ['build']);
+
+gulp.task('start', function() {
+  browserSync({ server: { baseDir: 'dist' } });
+  gulp.watch(['src/**/*'], ['buildAndReload']);
+});
+
 
 gulp.task('clean', ['tsconfig-glob'], function () {
   console.log('Deleting the contents of the distribution directory');
@@ -55,3 +61,8 @@ gulp.task('copy:libs', ['clean'], function() {
 gulp.task('tsconfig-glob', function () {
   return tsconfig({ configPath: '.', indent: 2 }); });
 
+gulp.task('tslint', function() {
+  return gulp.src('src/**/*.ts')
+    .pipe(tslint({}))
+    .pipe(tslint.report('verbose'));
+});

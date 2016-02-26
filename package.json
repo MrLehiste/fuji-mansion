@@ -29,10 +29,12 @@
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-tslint": "^4.3.2",
     "gulp-typescript": "^2.11.0",
     "jasmine-core": "2.4.1",
     "lite-server": "^2.1.0",
     "tsconfig-glob": "^0.4.1",
+    "tslint": "^3.4.0",
     "typescript": "^1.7.5"
   }
 }
