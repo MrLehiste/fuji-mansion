@@ -8,6 +8,10 @@ const browserSync = require('browser-sync');
 const reload = browserSync.reload;
 const tslint = require('gulp-tslint');
 
+gulp.task('app', function() {
+  browserSync({ server: { baseDir: '.' } });
+});
+
 gulp.task('serve', ['build'], function() {
   browserSync({ server: { baseDir: 'dist' } });
   gulp.watch(['src/**/*'], ['buildAndReload']);

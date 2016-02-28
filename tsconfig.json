@@ -12,7 +12,7 @@
   },
   "filesGlob": [
     "src/**/*.ts",
-    "typings/**/*.d.ts"
+    "typingsX/browser.d.ts"
   ],
   "files": [
     "src/app/boot.ts",
