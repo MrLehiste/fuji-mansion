@@ -1,5 +1,14 @@
 {
   "port": 8000,
   "files": ["./dist/**/*.{html,htm,css,js}"],
-  "server": { "baseDir": "./dist" }
+  "server": {
+    "baseDir": "dist",
+    "index": "index.html",
+    "routes": {
+        "/node_modules": "node_modules"
+    }
+  },
+  "ui": {
+    "port": 8001
+  }
 }

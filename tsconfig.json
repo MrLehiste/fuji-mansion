@@ -10,12 +10,9 @@
     "removeComments": false,
     "noImplicitAny": false
   },
-  "filesGlob": [
-    "src/**/*.ts",
-    "typingsX/browser.d.ts"
-  ],
-  "files": [
-    "src/app/boot.ts",
-    "src/app/master.component.ts"
+  "exclude": [
+    "node_modules",
+    "typings/main",
+    "typings/main.d.ts"
   ]
 }
