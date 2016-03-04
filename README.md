@@ -16,3 +16,6 @@ remap-istanbul: To map our coverage in JS files to TypeScript files.
 Required for karma init command:
 sudo npm install -g karma-cli
 
+typings install jasmine --save-dev --ambient
+
+-Setup protractor for .e2e tests 

@@ -12,7 +12,10 @@
     "tsc:w": "tsc -w",
     "lite": "lite-server",
     "typings": "typings",
-    "postinstall": "typings install"
+    "postinstall": "typings install",
+    "test": "karma start karma.conf.js",
+    "posttest": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage -t html",
+    "coverage": "lite-server --config bs-coverage.json"
   },
   "license": "ISC",
   "dependencies": {

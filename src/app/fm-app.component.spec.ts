@@ -1,5 +1,5 @@
 
-import {it, describe, expect, beforeEach, inject} from 'angular2/testing';
+import {it, describe, expect, beforeEach} from 'angular2/testing';
 import {FmAppComponent} from './fm-app.component';
 
 describe('FmAppComponent Tests', () => {
@@ -10,6 +10,10 @@ describe('FmAppComponent Tests', () => {
     });
 
     it('App title should be Fuji Mansion App', () => {
-        expect(app.title).toHaveText('Fuji Mansion App');
+        expect(app.title).toBe('Fuji Mansion App');
+    });
+
+    it('let me fail not', () => {
+        expect(true).not.toBe(false);
     });
 });
