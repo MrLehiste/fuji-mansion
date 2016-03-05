@@ -1,4 +1,4 @@
-describe('App', function() {
+describe('fm-app', function() {
 
   beforeEach(function() {
       browser.get('');
