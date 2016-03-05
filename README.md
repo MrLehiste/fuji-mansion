@@ -17,5 +17,7 @@ Required for karma init command:
 sudo npm install -g karma-cli
 
 typings install jasmine --save-dev --ambient
+typings install angular-protractor --save-dev --ambient
+typings install selenium-webdriver --save --ambient
 
 -Setup protractor for .e2e tests 
